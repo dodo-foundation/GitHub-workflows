@@ -1,6 +1,6 @@
 ```yml
 ---
-name: jira-ticket-movement
+name: to find the github trigger branch name
 on: [push]
 jobs:
   branch:
