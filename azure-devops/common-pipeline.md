@@ -4,12 +4,15 @@ trigger: none
 resources:
   - repo: self
 
-pool:
-  name: "Hosted Ubuntu 1604"
+pool: 
+  name: miga
+  demands:  
+  - Agent.ComputerName -equals access-server
 
 variables:
-  buildConfiguration: "Release"
-  buildPlatform: "AnyCPU"
+  tag: $(Build.BuildNumber)
+  repositoryName: acriodemoslockdev.azurecr.io
+  imageName: api-one
 
 stages:
   - stage: bd
@@ -17,18 +20,15 @@ stages:
     jobs:
       - job: "BUILDPROCESS"
         displayName: BUILD
-        # pool:
-        #   vmImage: "ubuntu-latest"
         steps:
           - task: Docker@2
             displayName: Build Docker Image
             inputs:
               command: build
-              containerRegistry: containerRegistry
-              repository: repo
-              Dockerfile: zookeeper/docker/Dockerfile
-              tags: $(Build.BuildNumber)
-              arguments: "--no-cache"
+              containerRegistry: docker-service
+              repository: $(imageName)
+              Dockerfile: Dockerfile
+              tags: $(tag)
 
           - script: |
               docker run -d --name ${{ parameters.zk }}  ${{ parameters.repositoryName }}/${{ parameters.zk }}:$(Build.BuildNumber)
@@ -50,8 +50,8 @@ stages:
             displayName: Push Docker Image to ACR
             inputs:
               command: push
-              containerRegistry: containerRegistry
-              repository: repo
+              containerRegistry: $(containerRegistry)
+              repository: $(repositoryName)
               tags: $(Build.BuildNumber)
 
           - script: |
