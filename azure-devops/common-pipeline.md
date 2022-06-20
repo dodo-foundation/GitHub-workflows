@@ -15,10 +15,10 @@ variables:
   imageName: api-one
 
 stages:
-  - stage: bd
-    displayName: "BUILD"
+  - stage: "build and deployment"
+    displayName: "build and deployment"
     jobs:
-      - job: "BUILDPROCESS"
+      - job: "buildDeployment"
         displayName: BUILD
         steps:
           - task: Docker@2
