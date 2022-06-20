@@ -21,15 +21,15 @@ stages:
       - job: "BUILDPROCESS"
         displayName: BUILD
         steps:
-          - task: Docker@2
-            displayName: Build Docker Image
-            inputs:
-              command: build
-              containerRegistry: docker-service
-              repository: $(imageName)
-              Dockerfile: Dockerfile
-              tags: $(tag)
-        - script: |
+        - task: Docker@2
+          displayName: Build Docker Image
+          inputs:
+            command: build
+            containerRegistry: docker-service
+            repository: $(imageName)
+            Dockerfile: Dockerfile
+            tags: $(tag)
+      - script: |
             docker run -d --name $(imageName)  $(repositoryName)/$(imageName):$(Build.BuildNumber)
           displayName: Verify Docker Image Running State
         - script: |
