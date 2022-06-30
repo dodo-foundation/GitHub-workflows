@@ -56,7 +56,7 @@ stages:
             inputs:
               sshEndpoint: 'ssh-connection'  # service connection
               runOptions: script
-              scriptPath: '$(System.DefaultWorkingDirectory)/_devops/drop/command.sh'
+              scriptPath: 'command.sh'
 
 
 ```
